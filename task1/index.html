@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Frontend</title>
+</head>
+<body>
+
+<div id="root"></div>
+
+
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+<script>
+    
+    const { useState } = React;
+
+    function App() {
+        const [data, setData] = useState([
+            { id: 1, name: 'John Doe', age: 25 },
+           
+        ]);
+
+        
+        const handleEdit = (id, field, value) => {
+            const newData = data.map(item =>
+                item.id === id ? { ...item, [field]: value } : item
+            );
+            setData(newData);
+
+            
+            console.log('Updated Data:', newData);
+        };
+
+        return (
+            React.createElement('table', null,
+                React.createElement('thead', null,
+                    React.createElement('tr', null,
+                        React.createElement('th', null, 'ID'),
+                        React.createElement('th', null, 'Name'),
+                        React.createElement('th', null, 'Age')
+                    )
+                ),
+                React.createElement('tbody', null,
+                    data.map(item =>
+                        React.createElement('tr', { key: item.id },
+                            React.createElement('td', null, item.id),
+                            React.createElement('td', {
+                                contentEditable: true,
+                                onBlur: (e) => handleEdit(item.id, 'name', e.target.innerText)
+                            }, item.name),
+                            React.createElement('td', {
+                                contentEditable: true,
+                                onBlur: (e) => handleEdit(item.id, 'age', e.target.innerText)
+                            }, item.age)
+                        )
+                    )
+                )
+            )
+        );
+    }
+
+    
+    ReactDOM.render(React.createElement(App), document.getElementById('root'));
+</script>
+
+</body>
+</html>
